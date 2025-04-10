@@ -1,5 +1,9 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import { type DefaultSession, type NextAuthOptions } from "next-auth";
+import {
+  getServerSession,
+  type DefaultSession,
+  type NextAuthOptions,
+} from "next-auth";
 import type { Adapter } from "next-auth/adapters";
 import CredentialsProvider from "next-auth/providers/credentials";
 
@@ -72,8 +76,8 @@ export const authConfig = {
         return {
           id: user.id,
           email: user.email,
-          firstName: user.firstName,
-          lastName: user.lastName,
+          firstName: user.firstName ?? undefined,
+          lastName: user.lastName ?? undefined,
           username: user.username,
         };
       },
@@ -107,3 +111,5 @@ export const authConfig = {
     signIn: "/admin/login",
   },
 } satisfies NextAuthOptions;
+
+export const getServerAuthSession = () => getServerSession(authConfig);
